@@ -19,10 +19,12 @@ def login_user(request):
             return redirect('home')
         else:
             messages.success(request, "There was an error logging in")
-            return redirect('login_user')
+            return redirect('login')
 
     else:
         return render(request, 'loginusr.html', {})
 
 def logout_user(request):
-    return render(request, 'home.html', {})
+    logout(request)
+    messages.success(request,"You've have been logged out")
+    return redirect('home')
