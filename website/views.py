@@ -2,12 +2,16 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm
+from .models import Record
 
 
 def home(request):
-    return render(request, 'home.html', {})
+    records = Record.objects.all()
+    return render(request, 'home.html', {'records':records})
 
 def login_user(request):
+
+    
 
     if request.method =='POST':
         username = request.POST['username']
@@ -23,7 +27,7 @@ def login_user(request):
             return redirect('login')
 
     else:
-        return render(request, 'loginusr.html', {})
+        return render(request, 'loginusr.html',{})
 
 def logout_user(request):
     logout(request)
@@ -46,3 +50,8 @@ def register_user(request):
         return render(request, 'regusr.html', {'form':form})
     
     return render(request, 'regusr.html', {'form':form})
+
+def customer_record(request, pk):
+    if request.user.is_authenticated:
+        customer_record = Record.objects.get(id=pk)
+        return render(request, 'record.html', {'customer_record':customer_record})
